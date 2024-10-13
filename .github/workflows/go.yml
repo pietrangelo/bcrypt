@@ -45,6 +45,13 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [linux, windows, darwin]
+        arch: [amd64, arm64]
+        exclude:
+          - os: macOS
+            arch: amd64  # Exclude macOS amd64 if not needed
     permissions: write-all
     steps:
       - name: Download artifacts
