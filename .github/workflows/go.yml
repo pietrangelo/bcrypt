@@ -39,5 +39,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: bcrypt
+          name: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
           path: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
