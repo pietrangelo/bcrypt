@@ -41,3 +41,40 @@ jobs:
         with:
           name: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
           path: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
+  
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      github-token: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1.0.0
+          release_name: Release v1.0.0
+          body: |
+            This is a new release of bcrypt. It includes binaries for the following platforms:
+              - Linux amd64
+              - Linux arm64
+              - Windows amd64
+              - Windows arm64
+              - MacOS arm64
+
+      - name: Upload Release Asset - ${{ matrix.os }}-${{ matrix.arch }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: $ {{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
+          asset_name: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
+          asset_content_type: application/octet-stream
