@@ -45,8 +45,7 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      github-token: write
+    permissions: write-all
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
