@@ -1,29 +1,44 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: Go
+name: Go Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        arch: [x64, arm64]
+        exclude:
+          - os: macOS-latest
+            arch: arm64  # Exclude macOS arm64 if not needed
+
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5.0.2
-      with:
-        go-version: '1.23'
-        architecture: x64,arm64
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod' # Use your Go version file
 
-    - name: Build
-      run: go build -v ./...
+      - name: Set up QEMU
+        if: runner.os == 'Linux' && matrix.arch == 'arm64'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: 'linux/arm64'
 
-    - name: Test
-      run: go test -v ./...
+      - name: Build
+        run: |
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o myapp-${{ matrix.os }}-${{ matrix.arch }}
+          # Replace 'myapp' with your actual application name
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: myapp-binaries
+          path: myapp-${{ matrix.os }}-${{ matrix.arch }}
