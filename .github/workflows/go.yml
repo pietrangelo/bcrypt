@@ -52,7 +52,7 @@ jobs:
         exclude:
           - os: macOS
             arch: amd64  # Exclude macOS amd64 if not needed
-    permissions: write
+    permissions: write-all
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
