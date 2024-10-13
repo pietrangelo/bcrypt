@@ -55,9 +55,7 @@ jobs:
             arch: amd64 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: bcrypt-${{ matrix.os }}-${{ matrix.arch }} 
+        uses: actions/download-artifact@v4
 
       - name: Create Release
         id: create_release
