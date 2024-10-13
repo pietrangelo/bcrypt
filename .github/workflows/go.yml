@@ -52,7 +52,7 @@ jobs:
         exclude:
           - os: macOS
             arch: amd64  # Exclude macOS amd64 if not needed
-    permissions: write-all
+    permissions: write
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
@@ -61,22 +61,22 @@ jobs:
       
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v2
+        uses: actions/github-script@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0
-          release_name: Release v1.0.0
-          body: |
-            This is a new release of bcrypt. It includes binaries for the following platforms:
-              - Linux amd64
-              - Linux arm64
-              - Windows amd64
-              - Windows arm64
-              - MacOS arm64
+          script: |
+            github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: 'v1.0.0',
+              release_name: 'v1.0.0',
+              release_name: 'Relase v1.0.0',
+              body: 'This is a new release of bcrypt.\nIt includes binaries for the following platforms:\n  - Linux x64\n  - Linux arm64\n  - Windows x64\n  - Windows arm64\n  - macOS arm64',
+            });
 
       - name: Upload Release Asset - ${{ matrix.os }}-${{ matrix.arch }}
-        uses: actions/upload-release-asset@v2
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: $ {{ secrets.GITHUB_TOKEN }}
         with:
