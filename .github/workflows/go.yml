@@ -34,11 +34,11 @@ jobs:
 
       - name: Build
         run: |
-          GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o myapp-${{ matrix.os }}-${{ matrix.arch }}
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o bcrypt-${{ matrix.os }}-${{ matrix.arch }}
           # Replace 'myapp' with your actual application name
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: myapp-binaries
-          path: myapp-${{ matrix.os }}-${{ matrix.arch }}
+          name: bcrypt
+          path: bcrypt-${{ matrix.os }}-${{ matrix.arch }}
