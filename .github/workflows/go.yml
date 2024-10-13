@@ -65,11 +65,11 @@ jobs:
         with:
           script: |
             github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: 'v1.0.0',
-              release_name: 'Release v1.0.0', # Removed duplicate release_name
-              body: 'This is a new release of bcrypt.\nIt includes binaries for the following platforms:\n  - Linux amd64\n  - Linux arm64\n  - Windows amd64\n  - Windows arm64\n  - macOS arm64',
+              "owner": context.repo.owner,
+              "repo": context.repo.repo,
+              "tag_name: "v1.0.0",
+              "release_name": "Release v1.0.0",
+              "body": "This is a new release of bcrypt.\nIt includes binaries for the following platforms:\n  - Linux amd64\n  - Linux arm64\n  - Windows amd64\n  - Windows arm64\n  - macOS arm64",
             });
 
       - name: Upload Release Asset - ${{ matrix.os }}-${{ matrix.arch }}
