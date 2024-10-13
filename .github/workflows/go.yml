@@ -61,7 +61,7 @@ jobs:
       
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -76,7 +76,7 @@ jobs:
               - MacOS arm64
 
       - name: Upload Release Asset - ${{ matrix.os }}-${{ matrix.arch }}
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v2
         env:
           GITHUB_TOKEN: $ {{ secrets.GITHUB_TOKEN }}
         with:
